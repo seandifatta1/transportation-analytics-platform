@@ -1,0 +1,7 @@
+
+### Get Month view
+GET {{root}}/users/{{user}}/specificExercise?specificExercise={{specificExercise}}
+
+### Get Month view
+GET {{root}}/users/{{user}}/specificExercise/Running
+

@@ -1,0 +1,26 @@
+
+### Add user
+POST {{root}}/users
+Content-Type: application/json
+
+{
+  "user": "seandifatta1@icloud.com",
+  "password": "seansean"
+}
+
+
+### Get specific user
+GET {{root}}/users
+Content-Type: application/json
+
+{
+  "id": "sean"
+}
+
+### Get all useres
+GET {{root}}/users
+Content-Type: application/json
+
+### Get all user set data in one array
+GET {{root}}/users/{{user}}/data
+

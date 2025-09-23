@@ -1,0 +1,3 @@
+
+// to load
+firebase emulators:start --import=/Users/seandifatta/PycharmProjects/fitnessdatadashboard/server/src/data/databases/emulatorData --export-on-exit

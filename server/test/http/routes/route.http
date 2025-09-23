@@ -1,0 +1,11 @@
+
+// Route route, just intended for testing middleware
+
+### Valid user/session. Result: Succesfully reach root
+GET {{root}}
+Accept: application/json
+Cookie: sessionID={{sessionID}}; user={{user}}
+
+### Inalid user/session. Result: fail to reach root, invalid error code
+GET {{root}}
+Accept: application/json

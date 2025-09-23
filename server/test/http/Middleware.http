@@ -1,0 +1,31 @@
+
+### Make a basic GET request to root with a valid/matching user/sessionID
+GET {{root}}?user={{user}}
+Accept: application/json
+Cookie: sessionID={{sessionID}}; user={{user}}
+
+
+### rsgserfs
+GET {{root}}?user={{user}}
+Accept: application/json
+#Cookie: sessionID={{sessionID}}; user={{user}}
+
+
+### Make a basic GET request to root with an invalid/matching user/sessionID
+GET {{root}}?user={{user}}
+Accept: application/json
+Cookie: sessionID={{sessionID}}; user=bob
+
+
+### Make a basic GET request to root with an invalid/matching user/sessionID
+GET {{root}}?user={{user}}
+Accept: application/json
+Cookie: sessionID=blah; user=sean
+
+
+### Make a basic GET request to root with an invalid/matching user/sessionID
+GET {{root}}?user={{user}}
+Accept: application/json
+Cookie: sessionID=blah; user=bob
+
+

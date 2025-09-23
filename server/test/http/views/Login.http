@@ -1,0 +1,54 @@
+
+### A. Login request with valid user/pass
+POST {{root}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "user": "{{user}}",
+  "password": "{{password}}"
+}
+
+
+### B. Login request with invalid user/pass
+POST {{root}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "user": "fvdfvsf",
+  "password": "sdfvsd"
+}
+
+### C. Pick up existing sesion
+POST {{root}}
+Accept: application/json
+Content-Type: application/json
+Cookie: sessionID={{sessionID}}; user={{user}}
+
+### Wrong cookies
+POST {{root}}
+Accept: application/json
+Content-Type: application/json
+Cookie: sessionID=tdrgdr; user=tdrgdrt
+
+### Right login with wrong cookies
+POST {{root}}
+Accept: application/json
+Content-Type: application/json
+Cookie: sessionID=tdrgdr; user=tdrgdrt
+
+{
+  "user": "{{user}}",
+  "password": "{{password}}"
+}
+
+
+### No cookies
+POST {{root}}
+Accept: application/json
+Content-Type: application/json
+
+
+
+

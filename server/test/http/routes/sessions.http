@@ -1,0 +1,23 @@
+
+### Get all sessions
+GET {{root}}/users/{{user}}/programs/{{program}}/sessions
+Content-Type: application/json
+
+### Get specific sessions
+GET {{root}}/users/sean/programs/jeff-nippard-fundamentals-of-hypertrophy/sessions/{{session}}
+Content-Type: application/json
+
+### write a new empty sesssion docs
+POST {{root}}/users/sean/programs/jeff-nippard-fundamentals-of-hypertrophy/sessions/{{session}}
+Content-Type: application/json
+
+### write a new non-empty session doc
+POST {{root}}/users/sean/programs/jeff-nippard-fundamentals-of-hypertrophy/sessions/{{session}}
+Content-Type: application/json
+
+{
+  "example": "data"
+}
+
+
+

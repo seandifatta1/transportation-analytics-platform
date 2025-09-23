@@ -1,0 +1,19 @@
+
+### Get all programs
+GET {{root}}/users/{{user}}/programs
+
+### Get specific program
+GET {{root}}/users/{{user}}/programs/{{program}}
+Content-Type: application/json
+
+### Add program
+POST {{root}}/users/{{user}}/programs/{{program}}
+
+### Add program with all data
+POST {{root}}/users/{{user}}/programs/{{program}}
+Content-Type: application/json
+Cookie: sessionID={{sessionID}}; user={{user}}
+
+
+< /Users/seandifatta/PycharmProjects/fitnessdatadashboard/server/src/csvjson1.json
+

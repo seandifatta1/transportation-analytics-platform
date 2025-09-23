@@ -1,0 +1,11 @@
+
+#GET {{root}}/users/{{user}}/month
+#Content-Type: application/json
+
+### Get specific program
+
+GET {{root}}/users/{{user}}/programs/{{program}}?unitOfTime=month&amount=1&from=now&statistics=true
+Content-Type: application/json
+
+### Get Month view
+GET {{root}}/users/{{user}}/month?unitOfTime=month&amount=1&from=now
