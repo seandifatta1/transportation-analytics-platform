@@ -1,9 +1,9 @@
 import React from 'react'
 import {ComponentPreview, Previews} from '@react-buddy/ide-toolbox'
 import {PaletteTree} from './palette'
-import ProgramCards from "../views/ProgramCards";
-import AddNewProgram from "../views/ProgramCards";
-import SetInputDialogFab from "../Components/AddSet";
+import FleetRoutes from "../views/FleetRoutes";
+import AddNewProgram from "../views/FleetRoutes";
+import SetInputDialogFab from "../components/AddPerformanceRecord";
 
 const ComponentPreviews = () => {
     return (

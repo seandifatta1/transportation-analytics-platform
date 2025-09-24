@@ -10,7 +10,7 @@ import {ScatterChart} from "@mui/x-charts";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import {FixedSizeList} from 'react-window';
-import Title from "../Components/Title";
+import Title from "../components/Title";
 import {useCookies} from "react-cookie";
 import {ScreenContext} from "../GlobalComponents";
 import { initializeTransportationData } from "../utils/initializeTransportationData";
@@ -19,7 +19,7 @@ import {
     FleetEfficiencyChart, 
     FleetSummaryCards,
     TimeSeriesChart 
-} from "../Components/TransportationCharts";
+} from "../components/TransportationCharts";
 
 export function WeeklyFleetAnalysis() {
     const [cookies,] = useCookies(['cookie-name']);

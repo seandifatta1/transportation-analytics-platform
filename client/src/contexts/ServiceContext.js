@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ServiceFactory } from '../services/ServiceFactory';
+import { ServiceFactory } from '../services/ServiceFactory.js';
 
 const ServiceContext = createContext(null);
 

@@ -23,6 +23,7 @@ import RouteIcon from '@mui/icons-material/Route';
 import { ScreenContext } from '../GlobalComponents';
 import { useData, useChartData, useNotifications } from '../hooks/useServices';
 import FleetPerformanceChart from '../components/charts/FleetPerformanceChart';
+import FleetEfficiencyChart from '../components/charts/FleetEfficiencyChart';
 import TimeSeriesChart from '../components/charts/TimeSeriesChart';
 import FleetSummaryCards from '../components/charts/FleetSummaryCards';
 

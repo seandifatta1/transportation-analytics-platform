@@ -21,7 +21,7 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import LocalGasStationIcon from '@mui/icons-material/LocalGasStation';
 import SpeedIcon from '@mui/icons-material/Speed';
 import RouteIcon from '@mui/icons-material/Route';
-import Title from "../Components/Title";
+import Title from "../components/Title";
 import {useCookies} from "react-cookie";
 import {ScreenContext} from "../GlobalComponents";
 import { initializeTransportationData } from "../utils/initializeTransportationData";
@@ -29,7 +29,7 @@ import {
     FleetPerformanceChart, 
     TimeSeriesChart,
     FleetSummaryCards 
-} from "../Components/TransportationCharts";
+} from "../components/TransportationCharts";
 
 export function VehicleAnalysis() {
     const [cookies,] = useCookies(['cookie-name']);

@@ -10,12 +10,12 @@ import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import DrawerItems, {Favorites, Programs, Snapshots} from './Components/TransportationListItems';
-import {AppBar, defaultTheme, Drawer} from "./Components/globals";
+import DrawerItems, {Favorites, Programs, Snapshots} from './components/TransportationListItems';
+import {CustomAppBar, defaultTheme, CustomDrawer} from "./components/globals";
 import {Outlet} from "react-router-dom";
-import AddPerformanceRecord from "./Components/AddPerformanceRecord";
-import AddPerformanceRecordRefactored from "./Components/AddPerformanceRecordRefactored";
-import LogoutButton from "./Components/LogoutButton";
+import AddPerformanceRecord from "./components/AddPerformanceRecord";
+import AddPerformanceRecordRefactored from "./components/AddPerformanceRecordRefactored";
+import LogoutButton from "./components/LogoutButton";
 import {useCookies} from "react-cookie";
 import axios from "axios";
 import { useAuth } from './contexts/AuthContext';
@@ -107,7 +107,7 @@ export default function GlobalComponents() {
                                 <ThemeProvider theme={defaultTheme}>
                                     <Box sx={{display: 'flex'}}>
                                         <CssBaseline/>
-                                        <AppBar position="absolute" open={open}>
+                                        <CustomAppBar position="absolute" open={open}>
                                             <Toolbar
                                                 sx={{
                                                     pr: '24px', // keep right padding when drawer closed
@@ -138,8 +138,8 @@ export default function GlobalComponents() {
                                                 <LogoutButton variant="icon" />
 
                                             </Toolbar>
-                                        </AppBar>
-                                        <Drawer variant="permanent" open={open}>
+                                        </CustomAppBar>
+                                        <CustomDrawer variant="permanent" open={open}>
                                             <Toolbar
                                                 sx={{
                                                     display: 'flex',
@@ -155,7 +155,7 @@ export default function GlobalComponents() {
                                             <Divider/>
                                             <DrawerItems/>
 
-                                        </Drawer>
+                                        </CustomDrawer>
                                         <Box
                                             component="main"
                                             sx={{

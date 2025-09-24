@@ -1,68 +1,108 @@
-import {createTheme, styled} from "@mui/material/styles";
-import MuiAppBar from "@mui/material/AppBar";
-import MuiDrawer from "@mui/material/Drawer";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
-import * as React from "react";
-
-export function Copyright(props) {
-
-    return (
-            <Typography variant="body2" color="text.secondary" align="center" {...props} >
-                {'Copyright © '}
-                <Link color="inherit" href="https://mui.com/">
-                    {/*Your Website*/}
-                    fitnessdatadashboard.com
-                </Link>{' '}
-                {new Date().getFullYear()}
-                {'.'}
-            </Typography>
-
-    );
-}
+import React from 'react';
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    IconButton,
+    Drawer,
+    Box,
+    useTheme,
+    useMediaQuery
+} from '@mui/material';
+import {
+    Menu as MenuIcon,
+    ChevronLeft as ChevronLeftIcon
+} from '@mui/icons-material';
 
 const drawerWidth = 240;
-export const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== 'open',
-})(({theme, open}) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
-export const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
-    ({theme, open}) => ({
-        '& .MuiDrawer-paper': {
-            position: 'relative',
-            whiteSpace: 'nowrap',
-            width: drawerWidth,
-            transition: theme.transitions.create('width', {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-            boxSizing: 'border-box',
-            ...(!open && {
-                overflowX: 'hidden',
-                transition: theme.transitions.create('width', {
-                    easing: theme.transitions.easing.sharp,
-                    duration: theme.transitions.duration.leavingScreen,
-                }),
-                width: theme.spacing(7),
-                [theme.breakpoints.up('sm')]: {
-                    width: theme.spacing(9),
-                },
-            }),
+
+export const defaultTheme = {
+    palette: {
+        primary: {
+            main: '#1976d2',
         },
-    }),
-);
-//  remove, this demo shouldn't need to reset the theme. /
-export const defaultTheme = createTheme();
+        secondary: {
+            main: '#dc004e',
+        },
+    },
+};
+
+export const CustomAppBar = ({ open, handleDrawerOpen, title }) => {
+    return (
+        <AppBar
+            position="fixed"
+            sx={{
+                zIndex: (theme) => theme.zIndex.drawer + 1,
+                transition: (theme) =>
+                    theme.transitions.create(['width', 'margin'], {
+                        easing: theme.transitions.easing.sharp,
+                        duration: theme.transitions.duration.leavingScreen,
+                    }),
+                ...(open && {
+                    marginLeft: drawerWidth,
+                    width: `calc(100% - ${drawerWidth}px)`,
+                    transition: (theme) =>
+                        theme.transitions.create(['width', 'margin'], {
+                            easing: theme.transitions.easing.sharp,
+                            duration: theme.transitions.duration.enteringScreen,
+                        }),
+                }),
+            }}
+        >
+            <Toolbar>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={handleDrawerOpen}
+                    edge="start"
+                    sx={{
+                        marginRight: 5,
+                        ...(open && { display: 'none' }),
+                    }}
+                >
+                    <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" noWrap component="div">
+                    {title || 'Transportation Analytics Platform'}
+                </Typography>
+            </Toolbar>
+        </AppBar>
+    );
+};
+
+export const CustomDrawer = ({ open, handleDrawerClose, children }) => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    return (
+        <Drawer
+            variant={isMobile ? 'temporary' : 'persistent'}
+            anchor="left"
+            open={open}
+            onClose={handleDrawerClose}
+            sx={{
+                width: drawerWidth,
+                flexShrink: 0,
+                '& .MuiDrawer-paper': {
+                    width: drawerWidth,
+                    boxSizing: 'border-box',
+                },
+            }}
+        >
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: theme.spacing(0, 1),
+                    ...theme.mixins.toolbar,
+                    justifyContent: 'flex-end',
+                }}
+            >
+                <IconButton onClick={handleDrawerClose}>
+                    <ChevronLeftIcon />
+                </IconButton>
+            </Box>
+            {children}
+        </Drawer>
+    );
+};

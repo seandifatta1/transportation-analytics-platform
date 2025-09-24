@@ -1,8 +1,8 @@
 import React from "react"
 import {Navigate, Route, Routes, useNavigate} from "react-router-dom"
-import {Login, SignUp} from "./Components/Login"
+import {Login, SignUp} from "./components/Login"
 import GlobalComponents from "./GlobalComponents";
-import {ProgramOverview} from "./views/ProgramOverview";
+// import {ProgramOverview} from "./views/ProgramOverview"; // Removed - file doesn't exist
 import FleetRoutes from "./views/FleetRoutes";
 import {WeeklyFleetAnalysis} from "./views/WeeklyFleetAnalysis";
 import WeeklyFleetAnalysisRefactored from "./views/WeeklyFleetAnalysisRefactored";
@@ -46,10 +46,10 @@ function App(defaultValue) {
                         <Route path="VehicleAnalysis" element={<VehicleAnalysisRefactored/>}/>
                         <Route path="VehicleAnalysis/:vehicleId" element={<VehicleAnalysisRefactored/>}/>
 
-                        <Route path="ProgramOverview" element={<ProgramOverview/>}/>
+                        {/* <Route path="ProgramOverview" element={<ProgramOverview/>}/> */}
 
                         <Route path="MyPrograms" element={<FleetRoutes/>}/>
-                        <Route path="MyPrograms/:programName" element={<ProgramOverview/>}/>
+                        <Route path="MyPrograms/:programName" element={<FleetRoutes/>}/>
                         <Route path="FleetRoutes" element={<FleetRoutes/>}/>
                     </Route>
                 </Routes>
