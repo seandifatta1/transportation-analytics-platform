@@ -1,0 +1,62 @@
+[
+  {
+    "id": "record-001",
+    "sessionId": "session-001",
+    "vehicleId": "vehicle-001",
+    "metricName": "fuel_efficiency",
+    "metricValue": 8.5,
+    "unit": "mpg",
+    "timestamp": "2024-01-15T08:00:00Z",
+    "notes": "Morning delivery run"
+  },
+  {
+    "id": "record-002",
+    "sessionId": "session-001",
+    "vehicleId": "vehicle-001",
+    "metricName": "distance_traveled",
+    "metricValue": 150.0,
+    "unit": "miles",
+    "timestamp": "2024-01-15T08:00:00Z",
+    "notes": "Morning delivery run"
+  },
+  {
+    "id": "record-003",
+    "sessionId": "session-002",
+    "vehicleId": "vehicle-002",
+    "metricName": "fuel_efficiency",
+    "metricValue": 12.3,
+    "unit": "mpg",
+    "timestamp": "2024-01-15T09:00:00Z",
+    "notes": "Afternoon pickup run"
+  },
+  {
+    "id": "record-004",
+    "sessionId": "session-002",
+    "vehicleId": "vehicle-002",
+    "metricName": "average_speed",
+    "metricValue": 35.5,
+    "unit": "mph",
+    "timestamp": "2024-01-15T09:00:00Z",
+    "notes": "Afternoon pickup run"
+  },
+  {
+    "id": "record-005",
+    "sessionId": "session-003",
+    "vehicleId": "vehicle-003",
+    "metricName": "fuel_efficiency",
+    "metricValue": 9.2,
+    "unit": "mpg",
+    "timestamp": "2024-01-15T10:00:00Z",
+    "notes": "Long haul delivery"
+  },
+  {
+    "id": "record-006",
+    "sessionId": "session-003",
+    "vehicleId": "vehicle-003",
+    "metricName": "distance_traveled",
+    "metricValue": 300.0,
+    "unit": "miles",
+    "timestamp": "2024-01-15T10:00:00Z",
+    "notes": "Long haul delivery"
+  }
+]

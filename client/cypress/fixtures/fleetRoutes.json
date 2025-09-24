@@ -1,0 +1,29 @@
+[
+  {
+    "id": "route-001",
+    "name": "City Delivery",
+    "type": "CITY_ROUTES",
+    "description": "Urban delivery routes within city limits",
+    "distance": 25.5,
+    "estimatedDuration": 120,
+    "status": "ACTIVE"
+  },
+  {
+    "id": "route-002",
+    "name": "Long Haul",
+    "type": "LONG_HAUL",
+    "description": "Interstate transportation routes",
+    "distance": 450.0,
+    "estimatedDuration": 480,
+    "status": "ACTIVE"
+  },
+  {
+    "id": "route-003",
+    "name": "Local Pickup",
+    "type": "LOCAL_ROUTES",
+    "description": "Local pickup and delivery routes",
+    "distance": 15.2,
+    "estimatedDuration": 90,
+    "status": "ACTIVE"
+  }
+]

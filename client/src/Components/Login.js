@@ -12,11 +12,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {createTheme, ThemeProvider} from '@mui/material/styles';
-import {useCookies} from "react-cookie";
-import axios from "axios";
-import {useNavigate} from "react-router-dom";
-import {ThisWeek} from "../views/ThisWeek";
+import {useNavigate, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
+import { useAuth } from '../contexts/AuthContext';
+import { Alert, CircularProgress } from '@mui/material';
 
 function Copyright(props) {
     return (
@@ -36,55 +35,46 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export function Login() {
+    const [signUp, setSignUp] = useState(false);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    
+    const { login, isAuthenticated, loading: authLoading } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    const [signUp, setSignUp] = useState(false)
-
-    const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
-
-    const navigate = useNavigate()
-
+    // Redirect if already authenticated
     useEffect(() => {
-        axios.post(`${process.env.REACT_APP_BASE_URL}/`, {}, {
-                withCredentials: true,
-                headers: {
-                    Cookie: document.cookie
-                }
-            }
-        ).then(r => {
+        if (isAuthenticated && !authLoading) {
+            const from = location.state?.from?.pathname || '/Dashboard/ThisWeek';
+            navigate(from, { replace: true });
+        }
+    }, [isAuthenticated, authLoading, navigate, location]);
 
-                if (r.status === 200) {
-                    navigate("/Dashboard/ThisWeek")
-                } else {
-                    console.info("Nav issue")
-                }
-
-            }
-        ).catch(e => {
-            console.error(e)
-        })
-    }, []);
-
-    const handleSubmit = (event) => {
-
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        setError('');
+        setLoading(true);
+
         const data = new FormData(event.currentTarget);
+        const email = data.get("email");
+        const password = data.get("password");
 
-        axios.post(`${process.env.REACT_APP_BASE_URL}/`, {
-            email: data.get("email"),
-            password: data.get("password")
-        }, {withCredentials: true}).then(r => {
-
-                if (r.status === 200) {
-                    navigate("/Dashboard/ThisWeek")
-                } else {
-                    // erfserfserfsefrs
-                    // navigate("/Dashboard/ThisWeek")
-                }
-
+        try {
+            const result = await login(email, password);
+            
+            if (result.success) {
+                const from = location.state?.from?.pathname || '/Dashboard/ThisWeek';
+                navigate(from, { replace: true });
+            } else {
+                setError(result.message || 'Login failed');
             }
-        ).catch(e => {
-            console.error(e)
-        })
+        } catch (error) {
+            console.error('Login error:', error);
+            setError('An unexpected error occurred');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -105,8 +95,18 @@ export function Login() {
                             <LockOutlinedIcon/>
                         </Avatar>
                         <Typography component="h1" variant="h5">
-                            Sign in
+                            Transportation Analytics Platform
                         </Typography>
+                        <Typography component="h2" variant="h6" color="text.secondary" sx={{ mt: 1 }}>
+                            Sign in to your account
+                        </Typography>
+                        
+                        {error && (
+                            <Alert severity="error" sx={{ mt: 2, width: '100%' }}>
+                                {error}
+                            </Alert>
+                        )}
+                        
                         <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
                             <TextField
                                 margin="normal"
@@ -117,6 +117,7 @@ export function Login() {
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
+                                disabled={loading}
                             />
                             <TextField
                                 margin="normal"
@@ -127,9 +128,10 @@ export function Login() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                disabled={loading}
                             />
                             <FormControlLabel
-                                control={<Checkbox value="remember" color="primary"/>}
+                                control={<Checkbox value="remember" color="primary" disabled={loading}/>}
                                 label="Remember me"
                             />
                             <Button
@@ -137,9 +139,13 @@ export function Login() {
                                 fullWidth
                                 variant="contained"
                                 sx={{mt: 3, mb: 2}}
+                                disabled={loading}
                             >
-                                {signUp ? "Create Account" : "Sign In"}
-
+                                {loading ? (
+                                    <CircularProgress size={24} color="inherit" />
+                                ) : (
+                                    signUp ? "Create Account" : "Sign In"
+                                )}
                             </Button>
                             <Grid container>
                                 <Grid item xs>
@@ -167,36 +173,47 @@ export function Login() {
 }
 
 export function SignUp() {
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    
+    const { register, isAuthenticated, loading: authLoading } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-    const [signUp, setSignUp] = useState(false)
+    // Redirect if already authenticated
+    useEffect(() => {
+        if (isAuthenticated && !authLoading) {
+            const from = location.state?.from?.pathname || '/Dashboard/ThisWeek';
+            navigate(from, { replace: true });
+        }
+    }, [isAuthenticated, authLoading, navigate, location]);
 
-    const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
-
-    const navigate = useNavigate()
-
-
-    const handleSubmit = (event) => {
-
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        setError('');
+        setLoading(true);
 
         const data = new FormData(event.currentTarget);
+        const email = data.get("email");
+        const password = data.get("password");
+        const firstName = data.get("firstName") || '';
+        const lastName = data.get("lastName") || '';
 
-        axios.post(`${process.env.REACT_APP_BASE_URL}/users`, {
-            email: data.get("email"),
-            password: data.get("password")
-        }, {withCredentials: true}).then(r => {
-
-                if (r.status === 200) {
-                    navigate("/Dashboard/ThisWeek")
-                } else {
-                    // slightly change component to response to invalid, or creat new
-                }
-
+        try {
+            const result = await register(email, password, firstName, lastName);
+            
+            if (result.success) {
+                const from = location.state?.from?.pathname || '/Dashboard/ThisWeek';
+                navigate(from, { replace: true });
+            } else {
+                setError(result.message || 'Registration failed');
             }
-        ).catch(e => {
-
-        })
-
+        } catch (error) {
+            console.error('Registration error:', error);
+            setError('An unexpected error occurred');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -215,9 +232,40 @@ export function SignUp() {
                         <LockOutlinedIcon/>
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Create Account
+                        Transportation Analytics Platform
                     </Typography>
+                    <Typography component="h2" variant="h6" color="text.secondary" sx={{ mt: 1 }}>
+                        Create your account
+                    </Typography>
+                    
+                    {error && (
+                        <Alert severity="error" sx={{ mt: 2, width: '100%' }}>
+                            {error}
+                        </Alert>
+                    )}
+                    
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="firstName"
+                            label="First Name"
+                            name="firstName"
+                            autoComplete="given-name"
+                            autoFocus
+                            disabled={loading}
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="lastName"
+                            label="Last Name"
+                            name="lastName"
+                            autoComplete="family-name"
+                            disabled={loading}
+                        />
                         <TextField
                             margin="normal"
                             required
@@ -226,7 +274,7 @@ export function SignUp() {
                             label="Email Address"
                             name="email"
                             autoComplete="email"
-                            autoFocus
+                            disabled={loading}
                         />
                         <TextField
                             margin="normal"
@@ -236,11 +284,12 @@ export function SignUp() {
                             label="Password"
                             type="password"
                             id="password"
-                            autoComplete="current-password"
+                            autoComplete="new-password"
+                            disabled={loading}
                         />
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary"/>}
-                            label="Remember me"
+                            control={<Checkbox value="remember" color="primary" disabled={loading}/>}
+                            label="I agree to the terms and conditions"
                         />
                         <Button
                             type="submit"
@@ -248,9 +297,13 @@ export function SignUp() {
                             variant="contained"
                             sx={{mt: 3, mb: 2}}
                             color="secondary"
+                            disabled={loading}
                         >
-                            Create Account
-
+                            {loading ? (
+                                <CircularProgress size={24} color="inherit" />
+                            ) : (
+                                "Create Account"
+                            )}
                         </Button>
                         {/*<Grid container>*/}
                         {/*    <Grid item xs>*/}

@@ -1,5 +1,5 @@
 {
-  "name": "fitnessdatadashboard",
+  "name": "transportation-analytics-platform",
   "version": "0.1.0",
   "private": true,
   "proxy": "http://localhost:3000",
@@ -34,7 +34,15 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:ci": "react-scripts test --coverage --watchAll=false --ci",
+    "eject": "react-scripts eject",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test:e2e": "cypress run",
+    "test:all": "npm run test:ci && npm run test:e2e"
   },
   "eslintConfig": {
     "extends": [
@@ -55,6 +63,17 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^13.10.0"
+    "@storybook/addon-actions": "^7.6.17",
+    "@storybook/addon-essentials": "^7.6.17",
+    "@storybook/addon-interactions": "^7.6.17",
+    "@storybook/addon-links": "^7.6.17",
+    "@storybook/blocks": "^7.6.17",
+    "@storybook/react": "^7.6.17",
+    "@storybook/react-webpack5": "^7.6.17",
+    "@storybook/testing-library": "^0.2.2",
+    "cypress": "^13.10.0",
+    "inversify": "^6.0.2",
+    "reflect-metadata": "^0.2.1",
+    "storybook": "^7.6.17"
   }
 }

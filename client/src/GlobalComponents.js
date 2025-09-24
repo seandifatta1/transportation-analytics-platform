@@ -10,12 +10,15 @@ import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import DrawerItems, {Favorites, Programs, Snapshots} from './Components/ListItems';
+import DrawerItems, {Favorites, Programs, Snapshots} from './Components/TransportationListItems';
 import {AppBar, defaultTheme, Drawer} from "./Components/globals";
 import {Outlet} from "react-router-dom";
-import SetInputDialogFab from "./Components/AddSet";
+import AddPerformanceRecord from "./Components/AddPerformanceRecord";
+import AddPerformanceRecordRefactored from "./Components/AddPerformanceRecordRefactored";
+import LogoutButton from "./Components/LogoutButton";
 import {useCookies} from "react-cookie";
 import axios from "axios";
+import { useAuth } from './contexts/AuthContext';
 
 export const RawDataContext = createContext();
 export const ListOfExercisesContext = createContext();
@@ -27,6 +30,7 @@ export const BrowserSessionContext = createContext()
 export default function GlobalComponents() {
 
     const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+    const { user, logout, isAuthenticated } = useAuth();
     const [browserSession, setBrowserSession] = useState(false)
 
 
@@ -40,8 +44,11 @@ export default function GlobalComponents() {
     const [open, setOpen] = React.useState(true);
 
     useEffect(() => {
+        if (!user?.id) return;
 
-        axios.get(`${process.env.REACT_APP_BASE_URL}/users/${cookies.user}/data`, {
+        const userId = user.id;
+
+        axios.get(`${process.env.REACT_APP_BASE_URL}/users/${userId}/data`, {
             withCredentials: true,
 
         })
@@ -49,7 +56,7 @@ export default function GlobalComponents() {
                 setRawData(r.data)
             }).catch(
             e => {
-                console.log()
+                console.log(e)
 
                 if (e.message.includes(401)) {
                     setBrowserSession(true)
@@ -57,26 +64,26 @@ export default function GlobalComponents() {
 
             })
 
-        axios.get(`${process.env.REACT_APP_BASE_URL}/users/${cookies.user}/exercises`, {
+        axios.get(`${process.env.REACT_APP_BASE_URL}/users/${userId}/exercises`, {
             withCredentials: true
         })
             .then(r => {
                 setListOfExercises(r.data)
             }).catch(e => console.log(e))
 
-        axios.get(`${process.env.REACT_APP_BASE_URL}/users/${cookies.user}/programs`, {
+        axios.get(`${process.env.REACT_APP_BASE_URL}/users/${userId}/programs`, {
             withCredentials: true
         })
             .then(r => {
                 setListOfPrograms(r.data)
             }).catch(e => console.log(e))
         //
-        axios.get(`${process.env.REACT_APP_BASE_URL}/users/${cookies.user}/sessions`, {withCredentials: true})
+        axios.get(`${process.env.REACT_APP_BASE_URL}/users/${userId}/sessions`, {withCredentials: true})
             .then(r => {
                 setListOfSessions(r.data)
             }).catch(e => console.log(e))
 
-    }, []);
+    }, [user]);
 
 
     const toggleDrawer = () => {
@@ -127,6 +134,8 @@ export default function GlobalComponents() {
                                                 >
                                                     {currentScreen}
                                                 </Typography>
+                                                
+                                                <LogoutButton variant="icon" />
 
                                             </Toolbar>
                                         </AppBar>
@@ -165,7 +174,7 @@ export default function GlobalComponents() {
                                                 {/*<Copyright sx={{pt: 4}}/>*/}
                                             </Container>
                                         </Box>
-                                        <SetInputDialogFab/>
+                                        <AddPerformanceRecordRefactored/>
                                     </Box>
                                 </ThemeProvider>
                             </RawDataContext.Provider>
