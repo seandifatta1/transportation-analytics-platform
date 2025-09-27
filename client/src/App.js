@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
-import { CustomAppBar, CustomDrawer } from './components/globals';
-import DrawerItems from './components/TransportationListItems';
-import FleetManagement from './components/FleetManagement';
-import DriverPerformance from './components/DriverPerformance';
-import AddPerformanceRecord from './components/AddPerformanceRecord';
-import TransportationCharts from './components/TransportationCharts';
-import Login from './components/Login';
-import LogoutButton from './components/LogoutButton';
-import ProtectedRoute from './components/ProtectedRoute';
+import { CustomAppBar, CustomDrawer } from './Components/globals';
+import DrawerItems from './Components/TransportationListItems';
+import FleetManagement from './Components/FleetManagement';
+import DriverPerformance from './Components/DriverPerformance';
+import AddPerformanceRecord from './Components/AddPerformanceRecord';
+import TransportationCharts from './Components/TransportationCharts';
+import Login from './Components/Login';
+import LogoutButton from './Components/LogoutButton';
+import ProtectedRoute from './Components/ProtectedRoute';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Create theme
