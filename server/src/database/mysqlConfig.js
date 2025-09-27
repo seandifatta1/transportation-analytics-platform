@@ -4,9 +4,9 @@ require('dotenv').config();
 
 // Database configuration
 const dbConfig = {
-    host: process.env.DB_HOST || 'localhost',
+    host: process.env.DB_HOST || '127.0.0.1', // Use IPv4 instead of localhost
     user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
+    password: process.env.DB_PASSWORD === 'your_mysql_password' ? '' : (process.env.DB_PASSWORD || ''),
     database: process.env.DB_NAME || 'transportation_analytics',
     port: process.env.DB_PORT || 3306,
     waitForConnections: true,
@@ -39,11 +39,11 @@ async function initializeDatabase() {
         const connection = await pool.getConnection();
         
         // Create database if it doesn't exist
-        await connection.execute(`CREATE DATABASE IF NOT EXISTS ${dbConfig.database}`);
-        await connection.execute(`USE ${dbConfig.database}`);
+        await connection.query(`CREATE DATABASE IF NOT EXISTS ${dbConfig.database}`);
+        await connection.query(`USE ${dbConfig.database}`);
         
         // Create users table
-        await connection.execute(`
+        await connection.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
                 username VARCHAR(50) UNIQUE NOT NULL,
@@ -56,7 +56,7 @@ async function initializeDatabase() {
         `);
         
         // Create vehicles table
-        await connection.execute(`
+        await connection.query(`
             CREATE TABLE IF NOT EXISTS vehicles (
                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(100) NOT NULL,
@@ -71,7 +71,7 @@ async function initializeDatabase() {
         `);
         
         // Create fleet_routes table (replaces programs)
-        await connection.execute(`
+        await connection.query(`
             CREATE TABLE IF NOT EXISTS fleet_routes (
                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(100) NOT NULL,
@@ -88,7 +88,7 @@ async function initializeDatabase() {
         `);
         
         // Create route_sessions table (replaces sessions)
-        await connection.execute(`
+        await connection.query(`
             CREATE TABLE IF NOT EXISTS route_sessions (
                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
                 name VARCHAR(100) NOT NULL,
@@ -106,7 +106,7 @@ async function initializeDatabase() {
         `);
         
         // Create performance_records table (replaces sets)
-        await connection.execute(`
+        await connection.query(`
             CREATE TABLE IF NOT EXISTS performance_records (
                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
                 session_id BIGINT NOT NULL,
@@ -123,7 +123,7 @@ async function initializeDatabase() {
         `);
         
         // Create drivers table
-        await connection.execute(`
+        await connection.query(`
             CREATE TABLE IF NOT EXISTS drivers (
                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
                 user_id BIGINT NOT NULL,
@@ -137,7 +137,7 @@ async function initializeDatabase() {
         `);
         
         // Create sessions table for authentication (replaces Firebase sessions)
-        await connection.execute(`
+        await connection.query(`
             CREATE TABLE IF NOT EXISTS auth_sessions (
                 id BIGINT PRIMARY KEY AUTO_INCREMENT,
                 user_id BIGINT NOT NULL,
@@ -149,19 +149,54 @@ async function initializeDatabase() {
             )
         `);
         
-        // Create indexes for better performance
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_vehicles_type ON vehicles(type)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_vehicles_status ON vehicles(status)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_routes_owner ON fleet_routes(owner_id)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_routes_type ON fleet_routes(type)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_sessions_route ON route_sessions(route_id)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_sessions_date ON route_sessions(route_date)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_performance_session ON performance_records(session_id)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_performance_vehicle ON performance_records(vehicle_id)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_performance_metric ON performance_records(metric_name)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_performance_recorded_at ON performance_records(recorded_at)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_auth_sessions_user ON auth_sessions(user_id)`);
-        await connection.execute(`CREATE INDEX IF NOT EXISTS idx_auth_sessions_expires ON auth_sessions(expires_at)`);
+        // Create indexes for better performance (MySQL doesn't support IF NOT EXISTS for indexes)
+        try {
+            await connection.query(`CREATE INDEX idx_vehicles_type ON vehicles(type)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_vehicles_status ON vehicles(status)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_routes_owner ON fleet_routes(owner_id)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_routes_type ON fleet_routes(type)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_sessions_route ON route_sessions(route_id)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_sessions_date ON route_sessions(route_date)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_performance_session ON performance_records(session_id)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_performance_vehicle ON performance_records(vehicle_id)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_performance_metric ON performance_records(metric_name)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_performance_recorded_at ON performance_records(recorded_at)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_auth_sessions_user ON auth_sessions(user_id)`);
+        } catch (e) { /* Index already exists */ }
+        
+        try {
+            await connection.query(`CREATE INDEX idx_auth_sessions_expires ON auth_sessions(expires_at)`);
+        } catch (e) { /* Index already exists */ }
         
         connection.release();
         console.log('✅ Database schema initialized successfully');
@@ -187,7 +222,7 @@ async function insertInitialData() {
         }
         
         // Insert sample vehicles
-        await connection.execute(`
+        await connection.query(`
             INSERT INTO vehicles (name, type, capacity, year, mileage, status) VALUES
             ('Truck-001', 'DELIVERY', '5T', 2022, 45000, 'ACTIVE'),
             ('Van-002', 'PICKUP', '2T', 2023, 12000, 'ACTIVE'),
@@ -199,7 +234,7 @@ async function insertInitialData() {
         const bcrypt = require('bcryptjs');
         const hashedPassword = await bcrypt.hash('password123', 10);
         
-        await connection.execute(`
+        await connection.query(`
             INSERT INTO users (username, email, password_hash, role) VALUES
             ('admin', 'admin@transportation.com', ?, 'ADMIN'),
             ('manager1', 'manager@transportation.com', ?, 'MANAGER'),
@@ -207,7 +242,7 @@ async function insertInitialData() {
         `, [hashedPassword, hashedPassword, hashedPassword]);
         
         // Insert sample fleet routes
-        await connection.execute(`
+        await connection.query(`
             INSERT INTO fleet_routes (name, description, owner_id, type, average_distance, average_duration) VALUES
             ('City Delivery', 'Urban delivery routes within city limits', 1, 'CITY_ROUTES', 45.2, 4.5),
             ('Long Haul', 'Interstate transportation routes', 1, 'LONG_HAUL', 320.8, 6.2),
@@ -215,7 +250,7 @@ async function insertInitialData() {
         `);
         
         // Insert sample drivers
-        await connection.execute(`
+        await connection.query(`
             INSERT INTO drivers (user_id, license_number, experience_years, status) VALUES
             (3, 'DL123456789', 5, 'ACTIVE')
         `);

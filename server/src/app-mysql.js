@@ -117,6 +117,10 @@ async function manageAuthentication(req) {
 app.use(async (req, res, next) => {
     try {
         // Skip authentication for certain routes
+        if (req.url === "/health") {
+            return next();
+        }
+        
         if (req.method === "POST" && req.url === "/users") {
             return next();
         }

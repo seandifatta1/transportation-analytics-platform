@@ -266,12 +266,80 @@ CREATE TABLE performance_records (
 - **E2E Tests** - User workflow testing for fleet management operations
 - **Performance Tests** - Load testing for data processing
 
+## 🚀 Quick Start
+
+### **One-Command Launch**
+
+#### **Option 1: Native Installation**
+```bash
+# Clone and run
+git clone https://github.com/seandifatta1/transportation-analytics-platform.git
+cd transportation-analytics-platform
+./launch.sh
+```
+
+The launch script handles everything:
+- ✅ Installs all dependencies
+- ✅ Sets up MySQL database
+- ✅ Initializes database schema
+- ✅ Starts both backend and frontend servers
+- ✅ Opens application at http://localhost:3000
+
+#### **Option 2: Docker (Recommended)**
+```bash
+# Clone and run with Docker
+git clone https://github.com/seandifatta1/transportation-analytics-platform.git
+cd transportation-analytics-platform
+docker-compose up --build
+```
+
+Docker handles everything:
+- ✅ Sets up MySQL database container
+- ✅ Builds and starts backend container
+- ✅ Builds and starts frontend container
+- ✅ Handles all networking and dependencies
+- ✅ Opens application at http://localhost:3000
+
+### **Launch Options**
+
+#### **Native Installation**
+```bash
+./launch.sh                 # Full setup and launch
+./launch.sh --setup-only    # Setup only, no servers
+./launch.sh --backend-only  # Backend only
+./launch.sh --frontend-only # Frontend only
+./launch.sh --help          # Show help
+```
+
+#### **Docker**
+```bash
+docker-compose up --build           # Start all services
+docker-compose up -d --build        # Start in background
+docker-compose down                 # Stop all services
+docker-compose logs -f              # View logs
+```
+
+### **Prerequisites**
+
+#### **Option 1: Native Installation**
+- **Node.js** (v16 or higher)
+- **MySQL** (v8.0 or higher)
+- **Git** (for cloning)
+
+#### **Option 2: Docker (Recommended)**
+- **Docker** (v20 or higher)
+- **Docker Compose** (v2 or higher)
+- **Git** (for cloning)
+
+For detailed setup instructions, see [LAUNCH.md](LAUNCH.md).
+
 ## 🚀 Deployment
 
 ### Development
 - Local development with hot reloading
 - MySQL database for local testing
-- Docker Compose for local services
+- One-command launch script
+- Service-based architecture
 
 ### Production
 - Docker containerization
