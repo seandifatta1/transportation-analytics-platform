@@ -15,7 +15,7 @@ export function Login() {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const authContext = useContext(AuthContext);
+    const authContext = null; // useContext(AuthContext);
     const login = authContext?.login || (() => console.log('Login stubbed'));
 
     const handleSubmit = async (e) => {
@@ -124,4 +124,4 @@ export function SignUp() {
     );
 }
 
-export { Login };
+// export { Login };
