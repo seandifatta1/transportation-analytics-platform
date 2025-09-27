@@ -7,13 +7,9 @@ export default {
 };
 
 export const Default = {
-  args: {
-    children: "Fleet Management Dashboard"
-  }
+  render: () => <Title>Fleet Management Dashboard</Title>
 };
 
 export const LongTitle = {
-  args: {
-    children: "Transportation Analytics Platform - Monthly Fleet Trends"
-  }
+  render: () => <Title>Transportation Analytics Platform - Monthly Fleet Trends</Title>
 };
