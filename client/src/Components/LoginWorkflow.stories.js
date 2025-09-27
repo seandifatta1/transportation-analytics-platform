@@ -203,7 +203,7 @@ const UserDashboard = ({ user, onLogout }) => {
 };
 
 // Main Auth Workflow Component
-const AuthWorkflowDemo = () => {
+const LoginWorkflowDemo = () => {
   const { user, isAuthenticated, login, logout, loading } = useAuth();
 
   if (loading) {
@@ -228,8 +228,8 @@ const AuthWorkflowDemo = () => {
 };
 
 export default {
-  title: 'Workflows/Authentication',
-  component: AuthWorkflowDemo,
+  title: 'Workflows/Login',
+  component: LoginWorkflowDemo,
   decorators: [
     (Story) => (
       <MemoryRouter>
