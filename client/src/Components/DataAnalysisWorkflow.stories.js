@@ -716,7 +716,7 @@ export const Default = {
   render: () => <DataAnalysisWorkflowDemo />,
 };
 
-export const AnalysisTypeSelection = {
+export const AnalysisTypeSelectionStory = {
   render: () => <AnalysisTypeSelection onSelectType={() => {}} selectedType={null} />,
 };
 

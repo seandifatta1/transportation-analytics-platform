@@ -691,7 +691,7 @@ export const Default = {
   render: () => <DailyOperationsWorkflowDemo />,
 };
 
-export const MorningBriefing = {
+export const MorningBriefingStory = {
   render: () => <MorningBriefing onStartDay={() => console.log('Start day clicked')} />,
 };
 
