@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthContext';
 import { Login, SignUp } from './Login';
-import { userEvent, within, expect } from '@storybook/test';
+import { userEvent, within } from '@storybook/testing-library';
+import { expect } from '@storybook/jest';
 
 // Mock AuthContext for Storybook
 const MockAuthProvider = ({ children }) => {

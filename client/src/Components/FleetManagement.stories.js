@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Box } from '@mui/material';
 import FleetManagement from './FleetManagement';
-import { userEvent, within, expect } from '@storybook/test';
+import { userEvent, within } from '@storybook/testing-library';
+import { expect } from '@storybook/jest';
 
 // Mock data for stories
 const mockVehicles = [
