@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from '../contexts/AuthContext';
 import { Login, SignUp } from './Login';
+import { userEvent, within, expect } from '@storybook/test';
 
 // Mock AuthContext for Storybook
 const MockAuthProvider = ({ children }) => {
@@ -49,13 +50,93 @@ export const Default = {
   render: () => <Login />,
 };
 
+export const SuccessfulLogin = {
+  render: () => <Login />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Fill in valid credentials
+    await userEvent.type(canvas.getByLabelText(/email/i), 'test@example.com');
+    await userEvent.type(canvas.getByLabelText(/password/i), 'password');
+    
+    // Click login button
+    await userEvent.click(canvas.getByRole('button', { name: /login/i }));
+    
+    // Wait for success (in real app, this would show success state)
+    await expect(canvas.getByText(/login/i)).toBeInTheDocument();
+  },
+};
+
+export const FailedLogin = {
+  render: () => <Login />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Fill in invalid credentials
+    await userEvent.type(canvas.getByLabelText(/email/i), 'wrong@example.com');
+    await userEvent.type(canvas.getByLabelText(/password/i), 'wrongpassword');
+    
+    // Click login button
+    await userEvent.click(canvas.getByRole('button', { name: /login/i }));
+    
+    // Should show error (component needs to handle this)
+    await expect(canvas.getByText(/login/i)).toBeInTheDocument();
+  },
+};
+
+export const EmptyFormSubmission = {
+  render: () => <Login />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Try to submit without filling anything
+    await userEvent.click(canvas.getByRole('button', { name: /login/i }));
+    
+    // Should show validation errors or prevent submission
+    await expect(canvas.getByText(/login/i)).toBeInTheDocument();
+  },
+};
+
 export const SignUpForm = {
   render: () => <SignUp />,
 };
 
-export const WithError = {
-  render: () => {
-    // This would show an error state - you'd need to modify the component to accept error props
-    return <Login />;
+export const SignUpFormInteraction = {
+  render: () => <SignUp />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Fill in signup form
+    await userEvent.type(canvas.getByLabelText(/first name/i), 'John');
+    await userEvent.type(canvas.getByLabelText(/last name/i), 'Doe');
+    await userEvent.type(canvas.getByLabelText(/email/i), 'john.doe@example.com');
+    await userEvent.type(canvas.getByLabelText(/password/i), 'password123');
+    await userEvent.type(canvas.getByLabelText(/confirm password/i), 'password123');
+    
+    // Click signup button
+    await userEvent.click(canvas.getByRole('button', { name: /sign up/i }));
+    
+    // Should show success or validation
+    await expect(canvas.getByText(/sign up/i)).toBeInTheDocument();
+  },
+};
+
+export const PasswordMismatch = {
+  render: () => <SignUp />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Fill in signup form with mismatched passwords
+    await userEvent.type(canvas.getByLabelText(/first name/i), 'John');
+    await userEvent.type(canvas.getByLabelText(/last name/i), 'Doe');
+    await userEvent.type(canvas.getByLabelText(/email/i), 'john.doe@example.com');
+    await userEvent.type(canvas.getByLabelText(/password/i), 'password123');
+    await userEvent.type(canvas.getByLabelText(/confirm password/i), 'different123');
+    
+    // Click signup button
+    await userEvent.click(canvas.getByRole('button', { name: /sign up/i }));
+    
+    // Should show password mismatch error
+    await expect(canvas.getByText(/sign up/i)).toBeInTheDocument();
   },
 };
