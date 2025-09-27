@@ -63,9 +63,67 @@ export const mockChartService = {
 
 export const mockAuthService = {
   isAuthenticated: () => true,
-  getCurrentUser: () => ({ id: 1, name: "Test User" }),
-  login: async () => ({ success: true }),
-  logout: async () => ({ success: true })
+  getCurrentUser: () => ({ id: 1, name: "Test User", email: "test@example.com" }),
+  getUser: () => ({ id: 1, name: "Test User", email: "test@example.com" }),
+  getUserId: () => 1,
+  getUserEmail: () => "test@example.com",
+  getToken: () => "mock-jwt-token",
+  
+  login: async (email, password) => {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    if (email === "test@example.com" && password === "password") {
+      return { 
+        success: true, 
+        user: { id: 1, name: "Test User", email: "test@example.com" }
+      };
+    } else {
+      return { 
+        success: false, 
+        message: "Invalid credentials" 
+      };
+    }
+  },
+  
+  register: async (email, password, firstName = '', lastName = '') => {
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return { 
+      success: true, 
+      user: { id: 2, name: `${firstName} ${lastName}`.trim(), email }
+    };
+  },
+  
+  logout: async () => {
+    await new Promise(resolve => setTimeout(resolve, 200));
+    return { success: true };
+  },
+  
+  validateSession: async () => {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    return { 
+      valid: true, 
+      user: { id: 1, name: "Test User", email: "test@example.com" }
+    };
+  },
+  
+  refreshToken: async () => {
+    await new Promise(resolve => setTimeout(resolve, 200));
+    return { success: true, token: "new-mock-jwt-token" };
+  },
+  
+  setAuthData: (token, user) => {
+    console.log('Mock: Setting auth data', { token, user });
+  },
+  
+  clearAuthData: () => {
+    console.log('Mock: Clearing auth data');
+  },
+  
+  checkAuth: async () => {
+    const result = await this.validateSession();
+    return result.valid;
+  }
 };
 
 export const mockNotificationService = {
