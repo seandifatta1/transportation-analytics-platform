@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { CustomAppBar, CustomDrawer, defaultTheme } from './globals';
-import { TransportationListItems } from './TransportationListItems';
+import DrawerItems from './TransportationListItems';
 
 // Create theme from defaultTheme
 const theme = createTheme(defaultTheme);
@@ -51,7 +51,7 @@ export const DrawerOnly = {
           open={open} 
           handleDrawerClose={() => setOpen(false)}
         >
-          <TransportationListItems />
+          <DrawerItems />
         </CustomDrawer>
         <Box sx={{ flexGrow: 1, p: 3 }}>
           <h2>Main Content Area</h2>
@@ -77,7 +77,7 @@ export const AppBarWithDrawer = {
           open={open} 
           handleDrawerClose={() => setOpen(false)}
         >
-          <TransportationListItems />
+          <DrawerItems />
         </CustomDrawer>
         <Box 
           sx={{ 
@@ -112,7 +112,7 @@ export const InteractiveLayout = {
           open={open} 
           handleDrawerClose={() => setOpen(false)}
         >
-          <TransportationListItems />
+          <DrawerItems />
         </CustomDrawer>
         <Box 
           sx={{ 
@@ -157,7 +157,7 @@ export const DifferentTitles = {
           open={open} 
           handleDrawerClose={() => setOpen(false)}
         >
-          <TransportationListItems />
+          <DrawerItems />
         </CustomDrawer>
         <Box 
           sx={{ 
