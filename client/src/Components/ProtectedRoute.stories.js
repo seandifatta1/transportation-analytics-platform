@@ -1,26 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { Box, Button, Typography, Paper } from '@mui/material';
-import ProtectedRoute from './ProtectedRoute';
 
-// Mock AuthContext
-const AuthProvider = ({ children, value }) => {
-  const AuthContext = React.createContext();
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+// Create a mock AuthContext
+const MockAuthContext = createContext();
 
 // Mock useAuth hook
 const useAuth = () => {
-  const AuthContext = React.createContext();
-  return React.useContext(AuthContext);
+  const context = useContext(MockAuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
 
-// Mock the useAuth hook globally
-React.useAuth = useAuth;
+// Mock AuthProvider
+const AuthProvider = ({ children, value }) => {
+  return (
+    <MockAuthContext.Provider value={value}>
+      {children}
+    </MockAuthContext.Provider>
+  );
+};
+
+// Simple ProtectedRoute component that uses our mock
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? children : <div>Redirecting to login...</div>;
+};
 
 // Protected content component
 const ProtectedContent = () => (
@@ -30,18 +37,6 @@ const ProtectedContent = () => (
     </Typography>
     <Typography variant="body1" sx={{ mt: 2 }}>
       This content is only visible to authenticated users!
-    </Typography>
-  </Paper>
-);
-
-// Login page component
-const LoginPage = () => (
-  <Paper sx={{ p: 3, textAlign: 'center' }}>
-    <Typography variant="h5" color="error.main">
-      🚫 Access Denied
-    </Typography>
-    <Typography variant="body1" sx={{ mt: 2 }}>
-      Please log in to access this content.
     </Typography>
   </Paper>
 );
