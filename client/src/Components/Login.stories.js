@@ -54,17 +54,25 @@ export const Default = {
 export const SuccessfulLogin = {
   render: () => <Login />,
   play: async ({ canvasElement }) => {
+    console.log('🎬 Play function started!');
     const canvas = within(canvasElement);
     
     // Fill in valid credentials
+    console.log('📝 Filling in email...');
     await userEvent.type(canvas.getByLabelText(/email/i), 'test@example.com');
+    
+    console.log('📝 Filling in password...');
     await userEvent.type(canvas.getByLabelText(/password/i), 'password');
     
     // Click login button
+    console.log('🖱️ Clicking login button...');
     await userEvent.click(canvas.getByRole('button', { name: /login/i }));
     
     // Wait for success (in real app, this would show success state)
+    console.log('✅ Checking for success...');
     await expect(canvas.getByText(/login/i)).toBeInTheDocument();
+    
+    console.log('🎬 Play function completed!');
   },
 };
 

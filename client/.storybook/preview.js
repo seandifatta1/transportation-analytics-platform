@@ -58,4 +58,9 @@ export const parameters = {
       },
     ],
   },
+  // Enable interactions addon
+  interactions: {
+    // Enable the interactions panel
+    enableInteractions: true,
+  },
 };
