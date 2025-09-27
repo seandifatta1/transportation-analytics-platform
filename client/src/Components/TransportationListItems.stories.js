@@ -1,22 +1,20 @@
 import React from 'react';
-import { Box, Typography, Paper } from '@mui/material';
-import { 
-  Favorites, 
-  Programs, 
-  Snapshots, 
-  default as DrawerItems 
-} from './TransportationListItems';
+import { Box, Paper, Typography } from '@mui/material';
+import DrawerItems, { Favorites, Programs, Snapshots } from './TransportationListItems';
 
 export default {
   title: 'Components/TransportationListItems',
   component: DrawerItems,
   decorators: [
     (Story) => (
-      <Box sx={{ p: 2, maxWidth: 300 }}>
+      <Box sx={{ width: 250, bgcolor: 'background.paper', p: 2 }}>
         <Story />
       </Box>
     ),
   ],
+  parameters: {
+    layout: 'padded',
+  },
 };
 
 export const AllItems = {
@@ -25,81 +23,35 @@ export const AllItems = {
 
 export const FavoritesOnly = {
   render: () => (
-    <Box>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Favorites
-      </Typography>
+    <Paper elevation={1} sx={{ p: 1 }}>
       <Favorites />
-    </Box>
+    </Paper>
   ),
 };
 
 export const ProgramsOnly = {
   render: () => (
-    <Box>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Programs
-      </Typography>
+    <Paper elevation={1} sx={{ p: 1 }}>
       <Programs />
-    </Box>
+    </Paper>
   ),
 };
 
 export const SnapshotsOnly = {
   render: () => (
-    <Box>
-      <Typography variant="h6" sx={{ mb: 2 }}>
-        Snapshots
-      </Typography>
+    <Paper elevation={1} sx={{ p: 1 }}>
       <Snapshots />
-    </Box>
+    </Paper>
   ),
 };
 
 export const InDrawer = {
   render: () => (
-    <Paper sx={{ width: 280, height: '100%' }}>
-      <Box sx={{ p: 2 }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Navigation Menu
-        </Typography>
-        <DrawerItems />
+    <Paper elevation={3} sx={{ width: 240, height: '100%', bgcolor: 'background.default' }}>
+      <Box sx={{ p: 2, borderBottom: '1px solid #eee' }}>
+        <Typography variant="h6">Navigation</Typography>
       </Box>
+      <DrawerItems />
     </Paper>
   ),
-};
-
-export const WithClickHandlers = {
-  render: () => {
-    const handleItemClick = (itemName) => {
-      console.log(`Clicked: ${itemName}`);
-      alert(`You clicked: ${itemName}`);
-    };
-
-    return (
-      <Box>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Interactive Navigation
-        </Typography>
-        <Box sx={{ mb: 2 }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Favorites
-          </Typography>
-          <Favorites />
-        </Box>
-        <Box sx={{ mb: 2 }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Programs
-          </Typography>
-          <Programs />
-        </Box>
-        <Box>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Snapshots
-          </Typography>
-          <Snapshots />
-        </Box>
-      </Box>
-    );
-  },
 };

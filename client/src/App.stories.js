@@ -1,7 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { Box, Button, Typography, Paper } from '@mui/material';
 import App from './App';
+
+// Create mock AuthContext
+const MockAuthContext = createContext();
+
+// Mock useAuth hook
+const useAuth = () => {
+  const context = useContext(MockAuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
 
 // Mock AuthContext for stories
 const MockAuthProvider = ({ children, isAuthenticated = true }) => {
@@ -23,9 +35,9 @@ const MockAuthProvider = ({ children, isAuthenticated = true }) => {
   });
 
   return (
-    <div>
+    <MockAuthContext.Provider value={authState}>
       {children}
-    </div>
+    </MockAuthContext.Provider>
   );
 };
 
@@ -90,11 +102,9 @@ export default {
   component: App,
   decorators: [
     (Story) => (
-      <MemoryRouter initialEntries={['/']}>
-        <Box sx={{ height: '100vh', width: '100vw' }}>
-          <Story />
-        </Box>
-      </MemoryRouter>
+      <Box sx={{ height: '100vh', width: '100vw' }}>
+        <Story />
+      </Box>
     ),
   ],
   parameters: {

@@ -51,14 +51,6 @@ export const Snapshots = () => (
                 <ListItemText primary="Vehicle Analysis" />
             </ListItemButton>
         </ListItem>
-        <ListItem disablePadding>
-            <ListItemButton>
-                <ListItemIcon>
-                    <TrendsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Monthly Trends" />
-            </ListItemButton>
-        </ListItem>
     </List>
 );
 
@@ -73,4 +65,3 @@ const DrawerItems = () => (
 );
 
 export default DrawerItems;
-
