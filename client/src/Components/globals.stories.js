@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 import { CustomAppBar, CustomDrawer, defaultTheme } from './globals';
-import { TransportationListItems } from './TransportationListItems';
+import { TransportationListItems } from '../Components/TransportationListItems';
 
 // Create theme from defaultTheme
 const theme = createTheme(defaultTheme);
