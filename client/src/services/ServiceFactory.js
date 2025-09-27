@@ -16,34 +16,40 @@ export class ServiceFactory {
      * Initialize all services with proper dependencies
      */
     initializeServices() {
-        // Register HttpClient first (no dependencies)
-        this.container.register(SERVICE_NAMES.HTTP_CLIENT, () => new HttpClient(this.baseUrl));
+        try {
+            // Register HttpClient first (no dependencies)
+            this.container.register(SERVICE_NAMES.HTTP_CLIENT, () => new HttpClient(this.baseUrl));
 
-        // Register StorageService (no dependencies)
-        this.container.register(SERVICE_NAMES.STORAGE_SERVICE, () => new StorageService());
+            // Register StorageService (no dependencies)
+            this.container.register(SERVICE_NAMES.STORAGE_SERVICE, () => new StorageService());
 
-        // Register NotificationService (no dependencies)
-        this.container.register(SERVICE_NAMES.NOTIFICATION_SERVICE, () => new NotificationService());
+            // Register NotificationService (no dependencies)
+            this.container.register(SERVICE_NAMES.NOTIFICATION_SERVICE, () => new NotificationService());
 
-        // Register AuthService (depends on HttpClient and StorageService)
-        this.container.register(SERVICE_NAMES.AUTH_SERVICE, () => {
-            const httpClient = this.container.get(SERVICE_NAMES.HTTP_CLIENT);
-            const storageService = this.container.get(SERVICE_NAMES.STORAGE_SERVICE);
-            return new AuthService(httpClient, storageService);
-        });
+            // Register AuthService (depends on HttpClient and StorageService)
+            this.container.register(SERVICE_NAMES.AUTH_SERVICE, () => {
+                const httpClient = this.container.get(SERVICE_NAMES.HTTP_CLIENT);
+                const storageService = this.container.get(SERVICE_NAMES.STORAGE_SERVICE);
+                return new AuthService(httpClient, storageService);
+            });
 
-        // Register DataService (depends on HttpClient and AuthService)
-        this.container.register(SERVICE_NAMES.DATA_SERVICE, () => {
-            const httpClient = this.container.get(SERVICE_NAMES.HTTP_CLIENT);
-            const authService = this.container.get(SERVICE_NAMES.AUTH_SERVICE);
-            return new DataService(httpClient, authService);
-        });
+            // Register DataService (depends on HttpClient only for now)
+            this.container.register(SERVICE_NAMES.DATA_SERVICE, () => {
+                const httpClient = this.container.get(SERVICE_NAMES.HTTP_CLIENT);
+                return new DataService(httpClient);
+            });
 
-        // Register ChartService (depends on DataService)
-        this.container.register(SERVICE_NAMES.CHART_SERVICE, () => {
-            const dataService = this.container.get(SERVICE_NAMES.DATA_SERVICE);
-            return new ChartService(dataService);
-        });
+            // Register ChartService (depends on DataService)
+            this.container.register(SERVICE_NAMES.CHART_SERVICE, () => {
+                const dataService = this.container.get(SERVICE_NAMES.DATA_SERVICE);
+                return new ChartService(dataService);
+            });
+
+            console.log('Services initialized successfully');
+        } catch (error) {
+            console.error('Error initializing services:', error);
+            throw error;
+        }
     }
 
     /**

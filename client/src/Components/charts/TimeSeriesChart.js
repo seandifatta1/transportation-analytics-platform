@@ -19,3 +19,4 @@ export function TimeSeriesChart({ data, title = "Time Series Data" }) {
 }
 
 export default TimeSeriesChart;
+

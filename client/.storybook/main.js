@@ -5,30 +5,32 @@ const config = {
     '../src/**/*.story.@(js|jsx|mjs|ts|tsx)'
   ],
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
+    {
+      name: '@storybook/addon-essentials',
+      options: {
+        performance: false, // Disable performance addon
+      },
+    },
     '@storybook/addon-interactions',
   ],
   framework: {
     name: '@storybook/react-webpack5',
     options: {},
   },
-  docs: {
-    autodocs: 'tag',
-  },
-  staticDirs: ['../public'],
   webpackFinal: async (config) => {
-    // Handle CSS imports
+    // Completely ignore CSS files
     config.module.rules.push({
       test: /\.css$/,
-      use: ['style-loader', 'css-loader'],
+      use: 'null-loader',
     });
 
-    // Handle SVG imports
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['@svgr/webpack'],
-    });
+    // Fix module resolution issues
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      path: false,
+      crypto: false,
+    };
 
     return config;
   },

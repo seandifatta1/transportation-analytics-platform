@@ -15,7 +15,8 @@ export const ServiceProvider = ({ children, config = {} }) => {
                 setError(null);
 
                 const factory = new ServiceFactory(config.baseUrl);
-                const serviceContainer = await factory.initializeServices();
+                factory.initializeServices();
+                const serviceContainer = factory.container;
                 
                 setContainer(serviceContainer);
             } catch (err) {

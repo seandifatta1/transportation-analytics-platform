@@ -74,8 +74,11 @@
     "@storybook/react": "^7.6.17",
     "@storybook/react-webpack5": "^7.6.17",
     "@storybook/testing-library": "^0.2.2",
+    "babel-loader": "^10.0.0",
     "cypress": "^13.10.0",
+    "ignore-loader": "^0.1.2",
     "inversify": "^6.0.2",
+    "null-loader": "^4.0.1",
     "reflect-metadata": "^0.2.1",
     "storybook": "^7.6.17"
   }

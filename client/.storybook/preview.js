@@ -1,9 +1,16 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 
-// Create a theme for Storybook
+// Suppress React Router future flag warnings
+if (typeof window !== 'undefined') {
+  window.__reactRouterFutureFlags = {
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  };
+}
+
+// Create a Material-UI theme
 const theme = createTheme({
   palette: {
     mode: 'light',
@@ -16,31 +23,28 @@ const theme = createTheme({
   },
 });
 
-// Global decorator for all stories
+// Global decorator to wrap all stories with Material-UI theme
 export const decorators = [
-  withThemeFromJSXProvider({
-    themes: {
-      light: theme,
-    },
-    defaultTheme: 'light',
-    Provider: ThemeProvider,
-    GlobalStyles: CssBaseline,
-  }),
+  (Story) => (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <div style={{ margin: '20px' }}>
+        <Story />
+      </div>
+    </ThemeProvider>
+  ),
 ];
 
-// Global parameters
+// Basic parameters
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       color: /(background|color)$/i,
-      date: /Date$/i,
+      date: /Date$/,
     },
   },
-  docs: {
-    theme: theme,
-  },
-  layout: 'centered',
+  layout: 'fullscreen',
   backgrounds: {
     default: 'light',
     values: [
@@ -52,16 +56,6 @@ export const parameters = {
         name: 'dark',
         value: '#333333',
       },
-      {
-        name: 'gray',
-        value: '#f5f5f5',
-      },
     ],
   },
 };
-
-// Global args
-export const args = {};
-
-// Global argTypes
-export const argTypes = {};

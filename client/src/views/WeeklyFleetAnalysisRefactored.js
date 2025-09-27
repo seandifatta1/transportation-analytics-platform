@@ -12,10 +12,10 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import { ScreenContext } from '../GlobalComponents';
 import { useData, useChartData, useNotifications } from '../hooks/useServices';
-import FleetPerformanceChart from '../components/charts/FleetPerformanceChart';
-import FleetEfficiencyChart from '../components/charts/FleetEfficiencyChart';
-import FleetSummaryCards from '../components/charts/FleetSummaryCards';
-import TimeSeriesChart from '../components/charts/TimeSeriesChart';
+import { FleetPerformanceChart } from '../components/charts/FleetPerformanceChart';
+import { FleetEfficiencyChart } from '../components/charts/FleetEfficiencyChart';
+import { FleetSummaryCards } from '../components/charts/FleetSummaryCards';
+import { TimeSeriesChart } from '../components/charts/TimeSeriesChart';
 
 const WeeklyFleetAnalysisRefactored = () => {
     const [currentScreen, setCurrentScreen] = useContext(ScreenContext);

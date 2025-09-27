@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import {
     Box,
     Tab,
@@ -17,106 +17,59 @@ import {
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import { ScreenContext } from '../GlobalComponents';
-import { useData, useChartData, useNotifications } from '../hooks/useServices';
-import FleetPerformanceChart from '../components/charts/FleetPerformanceChart';
-import FleetEfficiencyChart from '../components/charts/FleetEfficiencyChart';
-import FleetSummaryCards from '../components/charts/FleetSummaryCards';
-import TimeSeriesChart from '../components/charts/TimeSeriesChart';
+// Removed all dynamic imports - no hooks, no contexts
+import { FleetPerformanceChart } from '../components/charts/FleetPerformanceChart';
+import { FleetEfficiencyChart } from '../components/charts/FleetEfficiencyChart';
+import { FleetSummaryCards } from '../components/charts/FleetSummaryCards';
+import { TimeSeriesChart } from '../components/charts/TimeSeriesChart';
 
 const MonthlyFleetTrendsRefactored = () => {
-    const [currentScreen, setCurrentScreen] = useContext(ScreenContext);
-    const [currentTab, setCurrentTab] = useState("Delivery");
-    const [selectedMetric, setSelectedMetric] = useState('fuel_efficiency');
-    const [selectedTimeRange, setSelectedTimeRange] = useState('30days');
-    const { showError } = useNotifications();
+    // Static stub data - no hooks, no state, no dynamic data
+    const currentTab = "Delivery";
+    const selectedMetric = 'fuel_efficiency';
+    const selectedTimeRange = '30days';
 
-    if (currentScreen !== "Monthly Fleet Trends") {
-        setCurrentScreen("Monthly Fleet Trends");
-    }
+    // Stub performance data
+    const performanceData = [
+        { id: 1, vehicleId: 'V001', date: '2024-01-01', fuelEfficiency: 8.5, distanceTraveled: 150, averageSpeed: 45, idleTime: 2.5 },
+        { id: 2, vehicleId: 'V002', date: '2024-01-02', fuelEfficiency: 7.8, distanceTraveled: 200, averageSpeed: 50, idleTime: 1.8 },
+        { id: 3, vehicleId: 'V003', date: '2024-01-03', fuelEfficiency: 9.2, distanceTraveled: 180, averageSpeed: 42, idleTime: 3.2 },
+        { id: 4, vehicleId: 'V001', date: '2024-01-04', fuelEfficiency: 8.1, distanceTraveled: 220, averageSpeed: 48, idleTime: 2.1 },
+        { id: 5, vehicleId: 'V002', date: '2024-01-05', fuelEfficiency: 7.5, distanceTraveled: 190, averageSpeed: 46, idleTime: 2.8 },
+    ];
 
-    // Calculate date range based on selection
-    const getDateRange = (timeRange) => {
-        const endDate = new Date();
-        const startDate = new Date();
-        
-        switch (timeRange) {
-            case '7days':
-                startDate.setDate(endDate.getDate() - 7);
-                break;
-            case '30days':
-                startDate.setDate(endDate.getDate() - 30);
-                break;
-            case '90days':
-                startDate.setDate(endDate.getDate() - 90);
-                break;
-            case '1year':
-                startDate.setFullYear(endDate.getFullYear() - 1);
-                break;
-            default:
-                startDate.setDate(endDate.getDate() - 30);
-        }
-        
-        return {
-            startDate: startDate.toISOString().split('T')[0],
-            endDate: endDate.toISOString().split('T')[0]
-        };
-    };
+    // Stub vehicles data
+    const vehicles = [
+        { id: 'V001', make: 'Ford', model: 'Transit', year: 2020, licensePlate: 'ABC123' },
+        { id: 'V002', make: 'Mercedes', model: 'Sprinter', year: 2021, licensePlate: 'DEF456' },
+        { id: 'V003', make: 'Volkswagen', model: 'Crafter', year: 2019, licensePlate: 'GHI789' },
+    ];
 
-    const dateRange = getDateRange(selectedTimeRange);
-
-    // Use services for data fetching
-    const { data: performanceData, loading: performanceLoading, error: performanceError } = useData('performanceRecords', {
-        filters: {
-            startDate: dateRange.startDate,
-            endDate: dateRange.endDate
-        }
-    });
-
-    const { data: vehicles, loading: vehiclesLoading } = useData('vehicles');
-    const { data: routes, loading: routesLoading } = useData('fleetRoutes');
-
-    // Use services for chart data
-    const { chartData: fleetPerformanceData, loading: chartLoading } = useChartData('fleetPerformance', {
-        metricType: selectedMetric,
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate
-    });
-
-    const { chartData: timeSeriesData, loading: timeSeriesLoading } = useChartData('timeSeries', {
-        metricName: selectedMetric,
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate
-    });
-
-    // Handle errors
-    if (performanceError) {
-        showError('Failed to load performance data');
-    }
-
-    const handleTabChange = (event, newValue) => {
-        setCurrentTab(newValue);
-    };
-
-    const handleMetricChange = (metric) => {
-        setSelectedMetric(metric);
-    };
-
-    const handleTimeRangeChange = (timeRange) => {
-        setSelectedTimeRange(timeRange);
-    };
-
-    if (performanceLoading || vehiclesLoading || routesLoading) {
-        return (
-            <Box sx={{ p: 3, textAlign: 'center' }}>
-                <Typography>Loading monthly fleet trends...</Typography>
-            </Box>
-        );
-    }
+    // Stub routes data
+    const routes = [
+        { id: 'R001', name: 'City Delivery', type: 'DELIVERY', status: 'ACTIVE' },
+        { id: 'R002', name: 'Highway Haul', type: 'LONG_HAUL', status: 'ACTIVE' },
+        { id: 'R003', name: 'Local Pickup', type: 'DELIVERY', status: 'INACTIVE' },
+    ];
 
     return (
         <Box>
-            <FleetTabs currentTab={currentTab} onTabChange={handleTabChange} />
+            <Typography variant="h4" component="h1" sx={{ mb: 3 }}>
+                Monthly Fleet Trends
+            </Typography>
+            
+            {/* Fleet Tabs */}
+            <Tabs
+                value={currentTab}
+                variant="fullWidth"
+                scrollButtons
+                allowScrollButtonsMobile
+                aria-label="fleet type tabs"
+                sx={{ mb: 3 }}
+            >
+                <Tab icon={<DirectionsCarIcon/>} label="Delivery" value="Delivery"/>
+                <Tab icon={<LocalShippingIcon/>} label="Long Haul" value="Long Haul"/>
+            </Tabs>
             
             {/* Time Range and Metric Selectors */}
             <Box sx={{ mb: 3 }}>
@@ -125,7 +78,6 @@ const MonthlyFleetTrendsRefactored = () => {
                         <InputLabel>Time Range</InputLabel>
                         <Select
                             value={selectedTimeRange}
-                            onChange={(e) => handleTimeRangeChange(e.target.value)}
                             label="Time Range"
                         >
                             <MenuItem value="7days">Last 7 Days</MenuItem>
@@ -139,7 +91,6 @@ const MonthlyFleetTrendsRefactored = () => {
                         <InputLabel>Metric</InputLabel>
                         <Select
                             value={selectedMetric}
-                            onChange={(e) => handleMetricChange(e.target.value)}
                             label="Metric"
                         >
                             <MenuItem value="fuel_efficiency">Fuel Efficiency</MenuItem>
@@ -151,7 +102,7 @@ const MonthlyFleetTrendsRefactored = () => {
                     
                     <Chip 
                         icon={<TrendingUpIcon />} 
-                        label={`${selectedTimeRange.replace('days', ' days').replace('1year', '1 year')}`} 
+                        label="30 days" 
                         color="primary" 
                     />
                 </Stack>
@@ -160,88 +111,55 @@ const MonthlyFleetTrendsRefactored = () => {
             {/* Fleet Summary Cards */}
             <Box sx={{ mb: 3 }}>
                 <FleetSummaryCards 
-                    data={performanceData || []} 
+                    data={performanceData} 
                     title="Monthly Fleet Summary" 
                 />
             </Box>
             
+            {/* Charts */}
             {currentTab === "Delivery" ? (
-                <DeliveryCharts
-                    data={performanceData || []}
-                    vehicles={vehicles || []}
-                    routes={routes || []}
-                    selectedMetric={selectedMetric}
-                    onMetricChange={handleMetricChange}
-                />
+                <Grid container spacing={3}>
+                    {/* Fleet Performance Chart */}
+                    <Grid item xs={12} md={8}>
+                        <FleetPerformanceChart 
+                            data={performanceData}
+                            title="Monthly Fleet Performance"
+                            metricType={selectedMetric}
+                        />
+                    </Grid>
+                    
+                    {/* Fleet Efficiency Chart */}
+                    <Grid item xs={12} md={4}>
+                        <FleetEfficiencyChart 
+                            data={performanceData}
+                            title="Fleet Efficiency"
+                            metricType={selectedMetric}
+                        />
+                    </Grid>
+                    
+                    {/* Time Series Chart */}
+                    <Grid item xs={12}>
+                        <TimeSeriesChart 
+                            data={performanceData}
+                            title="Performance Over Time"
+                            metricName={selectedMetric}
+                        />
+                    </Grid>
+                </Grid>
             ) : (
-                <LongHaulCharts />
+                <Card>
+                    <CardContent sx={{ textAlign: 'center', py: 4 }}>
+                        <LocalShippingIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
+                        <Typography variant="h6" color="text.secondary" gutterBottom>
+                            Long Haul Analytics
+                        </Typography>
+                        <Typography color="text.secondary">
+                            Long haul performance analytics coming soon...
+                        </Typography>
+                    </CardContent>
+                </Card>
             )}
         </Box>
-    );
-};
-
-const FleetTabs = ({ currentTab, onTabChange }) => {
-    return (
-        <Tabs
-            value={currentTab}
-            onChange={onTabChange}
-            variant="fullWidth"
-            scrollButtons
-            allowScrollButtonsMobile
-            aria-label="fleet type tabs"
-            sx={{ mb: 3 }}
-        >
-            <Tab icon={<DirectionsCarIcon/>} label="Delivery" value="Delivery"/>
-            <Tab icon={<LocalShippingIcon/>} label="Long Haul" value="Long Haul"/>
-        </Tabs>
-    );
-};
-
-const DeliveryCharts = ({ data, vehicles, routes, selectedMetric, onMetricChange }) => {
-    return (
-        <Grid container spacing={3}>
-            {/* Fleet Performance Chart */}
-            <Grid item xs={12} md={8}>
-                <FleetPerformanceChart 
-                    data={data}
-                    title="Monthly Fleet Performance"
-                    onMetricChange={onMetricChange}
-                />
-            </Grid>
-            
-            {/* Fleet Efficiency Analysis */}
-            <Grid item xs={12} md={4}>
-                <FleetEfficiencyChart 
-                    data={data}
-                    title="Efficiency Analysis"
-                />
-            </Grid>
-            
-            {/* Time Series Chart */}
-            <Grid item xs={12}>
-                <TimeSeriesChart 
-                    data={data}
-                    title="Performance Trends Over Time"
-                    metric={selectedMetric}
-                />
-            </Grid>
-        </Grid>
-    );
-};
-
-const LongHaulCharts = () => {
-    return (
-        <Card>
-            <CardContent sx={{ textAlign: 'center', py: 4 }}>
-                <LocalShippingIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
-                <Typography variant="h6" color="text.secondary" gutterBottom>
-                    Long Haul Analytics
-                </Typography>
-                <Typography color="text.secondary">
-                    Long haul performance analytics coming soon...
-                </Typography>
-            </CardContent>
-        </Card>
     );
 };
 

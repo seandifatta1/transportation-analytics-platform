@@ -20,3 +20,4 @@ export function FleetEfficiencyChart({ data, title = "Fleet Efficiency" }) {
 }
 
 export default FleetEfficiencyChart;
+

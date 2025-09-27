@@ -1,15 +1,12 @@
-import { useContext, useMemo, useState, useCallback, useEffect } from 'react';
-import { ServiceContext } from '../contexts/ServiceContext';
-import { SERVICE_NAMES } from '../services/ServiceContainer';
+import React, { useContext, useMemo, useState, useCallback, useEffect } from 'react';
+import { useServiceContext } from '../contexts/ServiceContext';
+import { SERVICE_NAMES } from '../services/types.js';
 
 /**
  * Hook to access the service container
  */
 export const useServiceContainer = () => {
-    const context = useContext(ServiceContext);
-    if (!context) {
-        throw new Error('useServiceContainer must be used within a ServiceProvider');
-    }
+    const context = useServiceContext();
     return context.container;
 };
 
@@ -39,35 +36,35 @@ export const useServices = (serviceNames) => {
  * Hook to get data service
  */
 export const useDataService = () => {
-    return useService(SERVICE_NAMES.DATA);
+    return useService(SERVICE_NAMES.DATA_SERVICE);
 };
 
 /**
  * Hook to get chart service
  */
 export const useChartService = () => {
-    return useService(SERVICE_NAMES.CHART);
+    return useService(SERVICE_NAMES.CHART_SERVICE);
 };
 
 /**
  * Hook to get auth service
  */
 export const useAuthService = () => {
-    return useService(SERVICE_NAMES.AUTH);
+    return useService(SERVICE_NAMES.AUTH_SERVICE);
 };
 
 /**
  * Hook to get notification service
  */
 export const useNotificationService = () => {
-    return useService(SERVICE_NAMES.NOTIFICATION);
+    return useService(SERVICE_NAMES.NOTIFICATION_SERVICE);
 };
 
 /**
  * Hook to get storage service
  */
 export const useStorageService = () => {
-    return useService(SERVICE_NAMES.STORAGE);
+    return useService(SERVICE_NAMES.STORAGE_SERVICE);
 };
 
 /**

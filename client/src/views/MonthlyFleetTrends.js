@@ -24,13 +24,7 @@ import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import {ScreenContext} from "../GlobalComponents";
 import {useCookies} from "react-cookie";
 import { initializeTransportationData } from "../utils/initializeTransportationData";
-import { 
-    FleetPerformanceChart, 
-    FleetEfficiencyChart, 
-    RoutePerformanceChart,
-    TimeSeriesChart,
-    FleetSummaryCards 
-} from "../components/TransportationCharts";
+import { FleetSummaryCards } from "../components/charts/FleetSummaryCards";
 
 export function MonthlyFleetTrends() {
     const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);

@@ -8,9 +8,6 @@ import SetInputDialogFab from "../components/AddPerformanceRecord";
 const ComponentPreviews = () => {
     return (
         <Previews palette={<PaletteTree/>}>
-            <ComponentPreview path="/ProgramCards">
-                <ProgramCards/>
-            </ComponentPreview>
             <ComponentPreview path="/AddNewProgram">
                 <AddNewProgram/>
             </ComponentPreview>
